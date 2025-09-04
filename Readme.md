@@ -18,13 +18,18 @@ SSH Server
 
 # Subnet-naming
 10.1.0.0/16 - vpc 
+
 10.1.1.0/24 - AppA 
+
 10.1.2.0/24 - AppB 
 
+
 10.1.3.0/24 - MgtA 
+
 10.1.4.0/24 - MgtB 
 
 10.1.5.0/24 - BackA 
+
 10.1.6.0/24 - BackB
 
 # ASG/AppServers
