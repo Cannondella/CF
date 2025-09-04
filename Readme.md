@@ -21,13 +21,13 @@ The local names in the terraform doc still show private, public, db but in AWS n
 10.1.5.0/24 - BackA 
 10.1.6.0/24 - BackB
 
-# ASG
+# ASG/AppServers
 Deleted initial lifecycle hooks block
 changed "enable_monitoring = false", dont need detailed monitoring, cost
 Deleted extra EBS volume, set EBS type to gp3 and 8gb
 Used latest AL2023 AMI ID, hardcoded for now
-Added user data for install httpd and systemctl enable --now httpd
-The EC2s allow traffic from the alb security group ID, 80 and 443 for now
+Added user data for install httpd and systemctl enable --now httpd and a echo to index.html for basic page
+The EC2s allow traffic from the alb security group ID on ports 80 and 443
 
 # ALB
 Removed HTTPs listener, no ACM cert/domain/dns
@@ -37,7 +37,5 @@ Removed listener and target group from ALB config, created manually outside of m
 set launch template to use data block to lookup latest AL2023 AMI ID
 add EBS volumes for ASG to have name of the ec2, attachedTo tag and nametag
 Attach a regional WAF to the ALB with some basic AWS managed rules
-
-
-# More to Do
-add source for the app server security group rules to allow the ALB
+Register a domain and assign an ACM Cert to the ALB and a DNS entry for the cname to point to the ALB hostname
+I created the SSH keypairs manually inside of AWS and referenced them in the docs

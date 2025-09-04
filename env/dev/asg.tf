@@ -9,7 +9,7 @@ module "asg" {
   desired_capacity          = 1
   wait_for_capacity_timeout = "0"
   vpc_zone_identifier       = module.vpc.private_subnets
-  health_check_type = "ELB"
+  health_check_type         = "ELB"
 
   instance_refresh = {
     strategy = "Rolling"
@@ -30,8 +30,9 @@ module "asg" {
 
   image_id          = "ami-00ca32bbc84273381"
   instance_type     = "t2.micro"
-  security_groups   = [aws_security_group.app.id]
+  security_groups   = [aws_security_group.AppServer.id]
   enable_monitoring = false
+  key_name = "dev-ssh"
   user_data = base64encode(<<-EOF
     #!/bin/bash
     sudo yum -y install httpd
