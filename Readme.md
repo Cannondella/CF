@@ -40,6 +40,7 @@ Removed listener and target group from ALB config, created manually outside of t
 Associated target group to ASG via the tg.tf config file  
   
 # To do  
+Add a second bastion server in second AZ  
 set launch template to use data block to lookup latest AL2023 AMI ID  
 add EBS volumes for ASG to have name of the ec2, attachedTo tag and nametag  
 Attach a regional WAF to the ALB with some basic AWS managed rules  
