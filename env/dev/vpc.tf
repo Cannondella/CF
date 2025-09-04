@@ -9,6 +9,10 @@ module "vpc" {
   public_subnets  = ["10.1.3.0/24", "10.1.4.0/24"]
   database_subnets = ["10.1.5.0/24", "10.1.6.0/24"]
 
+  private_subnet_names  = ["AppA", "AppB"]
+  public_subnet_names   = ["MgtA", "MgtB"]
+  database_subnet_names = ["BackA", "BackB"]
+
   enable_nat_gateway = true
   enable_vpn_gateway = false
 
