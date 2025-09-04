@@ -27,9 +27,17 @@ changed "enable_monitoring = false", dont need detailed monitoring, cost
 Deleted extra EBS volume, set EBS type to gp3 and 8gb
 Used latest AL2023 AMI ID, hardcoded for now
 Added user data for install httpd and systemctl enable --now httpd
+The EC2s allow traffic from the alb security group ID, 80 and 443 for now
 
 # ALB
 Removed HTTPs listener, no ACM cert/domain/dns
+Removed listener and target group from ALB config, created manually outside of module config
 
 # To do
 set launch template to use data block to lookup latest AL2023 AMI ID
+add EBS volumes for ASG to have name of the ec2, attachedTo tag and nametag
+Attach a regional WAF to the ALB with some basic AWS managed rules
+
+
+# More to Do
+add source for the app server security group rules to allow the ALB

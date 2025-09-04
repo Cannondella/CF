@@ -9,6 +9,7 @@ module "asg" {
   desired_capacity          = 1
   wait_for_capacity_timeout = "0"
   vpc_zone_identifier       = module.vpc.private_subnets
+  health_check_type = "ELB"
 
   instance_refresh = {
     strategy = "Rolling"
