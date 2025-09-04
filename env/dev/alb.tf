@@ -2,8 +2,8 @@ module "alb" {
   source = "terraform-aws-modules/alb/aws"
 
   name    = "cf-alb"
-  vpc_id  = "vpc-abcde012"
-  subnets = ["subnet-abcde012", "subnet-bcde012a"]
+  vpc_id  = module.vpc.vpc_id
+  subnets = module.vpc.public_subnets
 
   # Security Group
   security_group_ingress_rules = {
@@ -25,29 +25,15 @@ module "alb" {
   security_group_egress_rules = {
     all = {
       ip_protocol = "-1"
-      cidr_ipv4   = "10.0.0.0/16"
+      cidr_ipv4   = "10.0.0.0/8"
     }
   }
 
-  access_logs = {
-    bucket = "my-alb-logs"
-  }
-
+  # HTTP listener only
   listeners = {
-    ex-http-https-redirect = {
+    ex-http = {
       port     = 80
       protocol = "HTTP"
-      redirect = {
-        port        = "443"
-        protocol    = "HTTPS"
-        status_code = "HTTP_301"
-      }
-    }
-    ex-https = {
-      port            = 443
-      protocol        = "HTTPS"
-      certificate_arn = "arn:aws:iam::123456789012:server-certificate/test_cert-123456789012"
-
       forward = {
         target_group_key = "ex-instance"
       }
@@ -56,16 +42,10 @@ module "alb" {
 
   target_groups = {
     ex-instance = {
-      name_prefix      = "h1"
-      protocol         = "HTTP"
-      port             = 80
-      target_type      = "instance"
-      target_id        = "i-0f6d38a07d50d080f"
+      name_prefix = "app"
+      protocol    = "HTTP"
+      port        = 80
+      target_type = "instance"
     }
-  }
-
-  tags = {
-    Environment = "Development"
-    Project     = "Example"
   }
 }
