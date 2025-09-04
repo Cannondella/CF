@@ -1,13 +1,17 @@
 module "ec2_instance" {
-  source  = "terraform-aws-modules/ec2-instance/aws"
+  source = "terraform-aws-modules/ec2-instance/aws"
 
   name = "ssh-management"
 
-  instance_type = "t2.micro"
-  key_name      = "dev-ssh"
-  subnet_id     = module.vpc.private_subnets[0]
+  instance_type               = "t2.micro"
+  key_name                    = "dev-ssh"
+  subnet_id                   = module.vpc.public_subnets[0]
+  associate_public_ip_address = true
+  iam_role_name               = "cf-ssm-role-asg"
+  create_security_group = false
+  vpc_security_group_ids = [aws_security_group.ssh-server.id]
 
   tags = {
-    Name   = "ssh-management"
+    Name = "ssh-management"
   }
 }

@@ -32,7 +32,7 @@ module "asg" {
   instance_type     = "t2.micro"
   security_groups   = [aws_security_group.AppServer.id]
   enable_monitoring = false
-  key_name = "dev-ssh"
+  key_name          = "dev-ssh"
   user_data = base64encode(<<-EOF
     #!/bin/bash
     sudo yum -y install httpd
