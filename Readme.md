@@ -1,16 +1,59 @@
+# What security gaps exist?
+SSH key is available for the servers, SSM can be more secure  
+No WAFs attached to ALB  
+
+# What availability issues?
+The SSH/Bastion server is only in one AZ, could deploy two  
+The ASG has availability if one zone goes down, but may reduce overall hosts
+
+# Cost optimization opportunities?
+Could set automated scaling to go up/down over weekend or based on most appropriate schedule  
+
+# Operational shortcomings
+No WAFs  
+No VPC Flow Logs  
+No customized cloudwatch agent logs for in OS logging, /var/logs
+No domain/identity management
+
+# Improvement Plan
+Organized by Priority
+Attach a regional WAF to the ALB with some basic AWS managed rules  
+Register a domain and assign an ACM Cert to the ALB and a DNS entry for the cname to point to the ALB hostname  
+Add a second bastion server in a second AZ 
+set launch template to use data block to lookup latest AL2023 AMI ID  
+add EBS volumes for ASG to have name of the ec2, attachedTo tag and nametag  
+I created the SSH keypairs manually inside of AWS and referenced them in the docs, but could generate key material for the keypair locally and create using that key material in the future. Did not want to expose any keypairs in the config/git repo.  
+The SSH Management EC2 uses a randomly assigned public IP that is lost on stop/start. Assign a static EIP so the IP is not lost  
+
+# Steps for Terraform deployment  
+cd /env/dev  
+aws configure sso (use profile name dev)  
+terraform init  
+terraform apply  
+  
+# Steps to SSH to bastion server and appservers
+SSH to bastion host  
+Putty using private key, dev-ssh.ppk (windows), dev-ssh.pem (linux)  
+User is ec2-user  
+  
+SSH to AppServer instances from bastion host:   
+copy dev-ssh.pem to dir below  
+chmod 400 ~/.ssh/dev-ssh.pem  
+ssh -i ~/.ssh/dev-ssh.pem ec2-user@<privateIP>  
+
+
 # Modules Used  
-VPC, ALB, EC2, ASG  
+Terraform's AWS module for VPC, ALB, EC2, ASG  
   
 # General   
 added default tags to providers.tf for terraform=true and environment=dev and removed from each individual doc  
 SSM Roles/SSM work across the EC2s for extra level of access in case SSH fails  
   
 # Security Groups  
-3 Security Groups total  
-ALB -   
-AppServers  
-SSH Server  
-  
+cf-alb - opens 80/443 from internet  
+App-Server-SG - opens 80/443 from the ALB's SG and 22 from the SSH Server's SG  
+SSH-Server-SG - opens 22 from /32 public IP
+
 # Subnets/High Availability Stuff  
 3 subnet tiers across 2 AZs, A and B.  
 6 Total subnets  
@@ -38,28 +81,3 @@ The EC2s allow traffic from source of alb security group ID on ports 80 and 443
 Removed HTTPs listener, no ACM cert/domain/dns  
 Removed listener and target group from ALB config, created manually outside of the ALB Module  
 Associated target group to ASG via the tg.tf config file  
-  
-# To do  
-Add a second bastion server in second AZ  
-set launch template to use data block to lookup latest AL2023 AMI ID  
-add EBS volumes for ASG to have name of the ec2, attachedTo tag and nametag  
-Attach a regional WAF to the ALB with some basic AWS managed rules  
-Register a domain and assign an ACM Cert to the ALB and a DNS entry for the cname to point to the ALB hostname  
-I created the SSH keypairs manually inside of AWS and referenced them in the docs, but could generate key material for the keypair locally and create using that key material in the future. Did not want to expose any keypairs in the config/git repo.  
-The SSH Management EC2 uses a randomly assigned public IP that is lost on stop/start. Assign a static EIP so the IP is not lost  
-  
-# Steps for deployment  
-cd /env/dev  
-aws configure sso (use profile name dev)  
-terraform init  
-terraform apply  
-  
-# Steps to SSH  
-SSH to bastion host  
-Putty using private key, dev-ssh.ppk (windows), dev-ssh.pem (linux)  
-User is ec2-user  
-  
-SSH to AppServer instances from bastion host:   
-copy dev-ssh.pem to dir below  
-chmod 400 ~/.ssh/dev-ssh.pem  
-ssh -i ~/.ssh/dev-ssh.pem ec2-user@<privateIP>  
