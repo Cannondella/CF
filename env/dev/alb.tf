@@ -28,24 +28,4 @@ module "alb" {
       cidr_ipv4   = "10.0.0.0/8"
     }
   }
-
-  # HTTP listener only
-  listeners = {
-    ex-http = {
-      port     = 80
-      protocol = "HTTP"
-      forward = {
-        target_group_key = "ex-instance"
-      }
-    }
-  }
-
-  target_groups = {
-    ex-instance = {
-      name_prefix = "app"
-      protocol    = "HTTP"
-      port        = 80
-      target_type = "instance"
-    }
-  }
 }
