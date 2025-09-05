@@ -1,3 +1,5 @@
+# ------------------------------- Assignment Notes --------------------------------------
+
 # What security gaps exist?
 SSH key is available for the servers, SSM can be more secure  
 No WAFs attached to ALB  
@@ -52,7 +54,7 @@ curl localhost, verify output
 systemctl status httpd ---> down? restart service ---> Wont start? look at logs  
 Verify traffic between app server and ALB listener rule is healthy. Security group has to allow the traffic
 
-#### General notes #####
+# -------------------------------  General notes --------------------------------------
 # Modules Used  
 Terraform's AWS module for VPC, ALB, EC2, ASG  
   
