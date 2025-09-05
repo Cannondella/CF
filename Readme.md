@@ -17,10 +17,10 @@ No customized cloudwatch agent logs for in OS logging, /var/logs
 No domain/identity management
 No registrar domain name/DNS/ACM Cert for the ALB
 
-# Improvement Plan
-Organized by Priority
+# Improvement Plan - Organized by Priority
 Attach a regional WAF to the ALB with some basic AWS managed rules  
 Register a domain and assign an ACM Cert to the ALB and a DNS entry for the cname to point to the ALB hostname  
+Add s3 backend for terraform
 Add a second bastion server in a second AZ 
 set launch template to use data block to lookup latest AL2023 AMI ID  
 add EBS volumes for ASG to have name of the ec2, attachedTo tag and nametag  
