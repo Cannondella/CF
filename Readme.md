@@ -11,9 +11,11 @@ Could set automated scaling to go up/down over weekend or based on most appropri
 
 # Operational shortcomings
 No WAFs  
-No VPC Flow Logs  
+No VPC Flow Logs
+Retention policies for cloudwatch log groups  
 No customized cloudwatch agent logs for in OS logging, /var/logs
 No domain/identity management
+No registrar domain name/DNS/ACM Cert for the ALB
 
 # Improvement Plan
 Organized by Priority
@@ -24,6 +26,8 @@ set launch template to use data block to lookup latest AL2023 AMI ID
 add EBS volumes for ASG to have name of the ec2, attachedTo tag and nametag  
 I created the SSH keypairs manually inside of AWS and referenced them in the docs, but could generate key material for the keypair locally and create using that key material in the future. Did not want to expose any keypairs in the config/git repo.  
 The SSH Management EC2 uses a randomly assigned public IP that is lost on stop/start. Assign a static EIP so the IP is not lost  
+ALB always gets stuck deleting on terraform destroy because deletion protection, disable it in tf doc, maybe leave enabled for prod env
+Fixing alot of the naming/tagging
 
 # Steps for Terraform deployment  
 cd /env/dev  

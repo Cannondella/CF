@@ -3,8 +3,8 @@ module "ec2_instance" {
 
   name = "ssh-management"
 
-  instance_type               = "t2.micro"
-  key_name                    = "dev-ssh"
+  instance_type               = var.instance_type
+  key_name                    = var.keypair
   subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true
   iam_role_name               = "cf-ssm-role-asg"

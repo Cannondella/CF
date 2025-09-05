@@ -4,9 +4,9 @@ module "asg" {
   # Autoscaling group
   name = "cf-asg"
 
-  min_size                  = 0
-  max_size                  = 1
-  desired_capacity          = 1
+  min_size                  = 2
+  max_size                  = 6
+  desired_capacity          = 2
   wait_for_capacity_timeout = "0"
   vpc_zone_identifier       = module.vpc.private_subnets
   health_check_type         = "ELB"
@@ -29,7 +29,7 @@ module "asg" {
   update_default_version      = true
 
   image_id          = "ami-00ca32bbc84273381"
-  instance_type     = "t2.micro"
+  instance_type     = var.instance_type
   security_groups   = [aws_security_group.AppServer.id]
   enable_monitoring = false
   key_name          = "dev-ssh"
