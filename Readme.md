@@ -46,7 +46,13 @@ copy dev-ssh.pem to dir below
 chmod 400 ~/.ssh/dev-ssh.pem  
 ssh -i ~/.ssh/dev-ssh.pem ec2-user@<privateIP>  
 
+# How would you respond to an outage for the EC2 instance?
+ALB health checks should monitor for curl localhost and basic ec2 health but the below steps could help troubleshoot once servers are removed from ASG, before theyre terminated
+curl localhost, verify output
+systemctl status httpd ---> down? restart service ---> Wont start? look at logs  
+Verify traffic between app server and ALB listener rule is healthy. Security group has to allow the traffic
 
+#### General notes #####
 # Modules Used  
 Terraform's AWS module for VPC, ALB, EC2, ASG  
   
