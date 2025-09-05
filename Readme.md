@@ -28,6 +28,7 @@ I created the SSH keypairs manually inside of AWS and referenced them in the doc
 The SSH Management EC2 uses a randomly assigned public IP that is lost on stop/start. Assign a static EIP so the IP is not lost  
 ALB always gets stuck deleting on terraform destroy because deletion protection, disable it in tf doc, maybe leave enabled for prod env
 Fixing alot of the naming/tagging
+Extracting some more variables out of the documents. I did keypair, ami, and instance type. Helps for less repeats in code but also easier to see important changing info in a static location, terraform.tfvars
 
 # Steps for Terraform deployment  
 cd /env/dev  
