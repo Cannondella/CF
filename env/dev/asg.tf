@@ -28,11 +28,11 @@ module "asg" {
   launch_template_description = "Web App"
   update_default_version      = true
 
-  image_id          = "ami-00ca32bbc84273381"
+  image_id          = var.ami
   instance_type     = var.instance_type
   security_groups   = [aws_security_group.AppServer.id]
   enable_monitoring = false
-  key_name          = "dev-ssh"
+  key_name          = var.keypair
   user_data = base64encode(<<-EOF
     #!/bin/bash
     sudo yum -y install httpd

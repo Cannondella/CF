@@ -1,7 +1,11 @@
 variable "instance_type" {
-    type = string
+  type = string
 }
 
 variable "keypair" {
-    type = string
+  type = string
+}
+
+variable "ami" {
+  type = string
 }
