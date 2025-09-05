@@ -51,6 +51,7 @@ ssh -i ~/.ssh/dev-ssh.pem ec2-user@<privateIP>
 Terraform's AWS module for VPC, ALB, EC2, ASG  
   
 # General   
+Images use the latest AL2023 AMI ID
 added default tags to providers.tf for terraform=true and environment=dev and removed from each individual doc  
 SSM Roles/SSM work across the EC2s for extra level of access in case SSH fails  
   
